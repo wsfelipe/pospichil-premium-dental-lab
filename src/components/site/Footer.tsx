@@ -48,8 +48,8 @@ export function Footer() {
               </li>
               <li className="flex items-start gap-3">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                <a href="mailto:contato@laboratoriopospichil.com.br" className="hover:text-foreground transition-colors">
-                  contato@laboratoriopospichil.com.br
+                <a href="mailto:protesepospichil99@gmail.com" className="hover:text-foreground transition-colors">
+                  protesepospichil99@gmail.com
                 </a>
               </li>
             </ul>
