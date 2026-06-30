@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Instagram } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
@@ -19,6 +19,7 @@ import {
   Check,
   Quote,
 } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { WhatsAppFAB } from "@/components/site/WhatsAppFAB";
@@ -399,6 +400,26 @@ const GALERIA_PLACEHOLDERS = [
 function Galeria() {
   const temImagens = galeriaItems.length > 0;
   const filtradas = galeriaItems.filter((i) => i.categoria === "Facetas");
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const closeLightbox = () => setLightboxIndex(null);
+  const prev = () =>
+    setLightboxIndex((i) =>
+      i === null ? i : (i - 1 + filtradas.length) % filtradas.length,
+    );
+  const next = () =>
+    setLightboxIndex((i) => (i === null ? i : (i + 1) % filtradas.length));
+
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [lightboxIndex]);
 
   return (
     <Section id="galeria" className="border-t border-hairline">
@@ -415,25 +436,86 @@ function Galeria() {
       </FadeUp>
 
       {filtradas.length > 0 ? (
-        <div className="mt-12 columns-2 gap-4 md:columns-3 lg:columns-4">
-          {filtradas.map((g, i) => (
-            <FadeUp key={g.filename} delay={(i % 4) * 0.05} className="mb-4 break-inside-avoid">
-              <figure className="group relative overflow-hidden rounded-xl border border-hairline">
+        <>
+          <div className="mt-12 columns-2 gap-4 md:columns-3 lg:columns-4">
+            {filtradas.map((g, i) => (
+              <FadeUp key={g.filename} delay={(i % 4) * 0.05} className="mb-4 break-inside-avoid">
+                <figure className="group relative overflow-hidden rounded-xl border border-hairline">
+                  <button
+                    type="button"
+                    onClick={() => setLightboxIndex(i)}
+                    className="block w-full cursor-zoom-in"
+                    aria-label={`Abrir imagem ${g.titulo}`}
+                  >
+                    <img
+                      src={g.src}
+                      alt={g.titulo}
+                      loading="lazy"
+                      className="block w-full h-auto transition-transform duration-700 group-hover:scale-105"
+                    />
+                  </button>
+                  <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/40 to-transparent p-4">
+                    <span className="text-[11px] uppercase tracking-[0.22em] text-white/90">
+                      {g.categoria}
+                    </span>
+                  </figcaption>
+                </figure>
+              </FadeUp>
+            ))}
+          </div>
+
+          {lightboxIndex !== null && (
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Visualização da imagem"
+              className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 md:p-10 animate-in fade-in duration-200"
+              onClick={closeLightbox}
+            >
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
+                aria-label="Fechar"
+                className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white/90 transition hover:bg-white/10"
+              >
+                <X className="h-5 w-5" />
+              </button>
+              {filtradas.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); prev(); }}
+                    aria-label="Imagem anterior"
+                    className="absolute left-3 md:left-6 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/20 text-white/90 transition hover:bg-white/10"
+                  >
+                    <ChevronLeft className="h-6 w-6" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); next(); }}
+                    aria-label="Próxima imagem"
+                    className="absolute right-3 md:right-6 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/20 text-white/90 transition hover:bg-white/10"
+                  >
+                    <ChevronRight className="h-6 w-6" />
+                  </button>
+                </>
+              )}
+              <figure
+                className="relative max-h-[88vh] max-w-[92vw]"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <img
-                  src={g.src}
-                  alt={g.titulo}
-                  loading="lazy"
-                  className="block w-full h-auto transition-transform duration-700 group-hover:scale-105"
+                  src={filtradas[lightboxIndex].src}
+                  alt={filtradas[lightboxIndex].titulo}
+                  className="block max-h-[88vh] max-w-[92vw] rounded-lg object-contain"
                 />
-                <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  <span className="text-[11px] uppercase tracking-[0.22em] text-white/90">
-                    {g.categoria}
-                  </span>
+                <figcaption className="mt-3 text-center text-[11px] uppercase tracking-[0.22em] text-white/80">
+                  {filtradas[lightboxIndex].categoria} · {lightboxIndex + 1}/{filtradas.length}
                 </figcaption>
               </figure>
-            </FadeUp>
-          ))}
-        </div>
+            </div>
+          )}
+        </>
       ) : temImagens ? (
         <div className="mt-12 columns-2 gap-4 md:columns-3 lg:columns-4">
           {galeriaItems.map((g, i) => (
