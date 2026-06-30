@@ -624,7 +624,17 @@ function Contato() {
             <p className="text-muted-foreground">
               Rua Gáspar Martins, 984 — Centro · Taquara/RS
             </p>
-            <p className="text-muted-foreground">@laboratoriopospichil</p>
+            <a
+              href="https://www.instagram.com/laboratoriopospichil"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-accent"
+            >
+              <span className="grid h-10 w-10 place-items-center rounded-full border border-hairline">
+                <Instagram className="h-4 w-4 fill-current" />
+              </span>
+              Siga-nos no Instagram @laboratoriopospichil
+            </a>
           </div>
         </FadeUp>
 
