@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Instagram } from "lucide-react";
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
