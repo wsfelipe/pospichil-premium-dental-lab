@@ -397,11 +397,7 @@ const GALERIA_PLACEHOLDERS = [
 
 function Galeria() {
   const temImagens = galeriaItems.length > 0;
-  const [filtro, setFiltro] = useState<string>("Todas");
-  const filtradas =
-    filtro === "Todas"
-      ? galeriaItems
-      : galeriaItems.filter((i) => i.categoria === filtro);
+  const filtradas = galeriaItems.filter((i) => i.categoria === "Facetas");
 
   return (
     <Section id="galeria" className="border-t border-hairline">
@@ -414,59 +410,35 @@ function Galeria() {
               <span className="italic text-accent">trabalho</span> e a casa.
             </>
           }
-          description={
-            temImagens
-              ? "Espaço, equipe, equipamentos e peças entregues."
-              : "Espaço, equipe, equipamentos e peças entregues. (Imagens reais em breve.)"
-          }
         />
       </FadeUp>
 
-      {temImagens && galeriaCategorias.length > 1 && (
-        <FadeUp delay={0.05}>
-          <div className="mt-12 flex flex-wrap gap-2">
-            {["Todas", ...galeriaCategorias].map((cat) => {
-              const ativa = cat === filtro;
-              return (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setFiltro(cat)}
-                  className={`rounded-full border px-4 py-1.5 text-[11px] uppercase tracking-[0.22em] transition-all ${
-                    ativa
-                      ? "border-accent bg-accent/10 text-accent"
-                      : "border-hairline text-muted-foreground hover:border-accent/40 hover:text-foreground"
-                  }`}
-                >
-                  {cat}
-                </button>
-              );
-            })}
-          </div>
-        </FadeUp>
-      )}
-
-      {temImagens ? (
+      {filtradas.length > 0 ? (
         <div className="mt-12 columns-2 gap-4 md:columns-3 lg:columns-4">
           {filtradas.map((g, i) => (
             <FadeUp key={g.filename} delay={(i % 4) * 0.05} className="mb-4 break-inside-avoid">
               <figure className="group relative overflow-hidden rounded-xl border border-hairline">
                 <img
                   src={g.src}
-                  alt={`${g.categoria} — ${g.titulo}`}
+                  alt={g.titulo}
                   loading="lazy"
                   className="block w-full h-auto transition-transform duration-700 group-hover:scale-105"
                 />
-                <figcaption className="pointer-events-none absolute inset-0 flex items-end bg-gradient-to-t from-background/85 via-background/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                  <div className="p-4">
-                    <p className="text-[10px] uppercase tracking-[0.24em] text-accent">
-                      {g.categoria}
-                    </p>
-                    <p className="mt-1 font-serif text-base text-foreground">
-                      {g.titulo}
-                    </p>
-                  </div>
-                </figcaption>
+              </figure>
+            </FadeUp>
+          ))}
+        </div>
+      ) : temImagens ? (
+        <div className="mt-12 columns-2 gap-4 md:columns-3 lg:columns-4">
+          {galeriaItems.map((g, i) => (
+            <FadeUp key={g.filename} delay={(i % 4) * 0.05} className="mb-4 break-inside-avoid">
+              <figure className="group relative overflow-hidden rounded-xl border border-hairline">
+                <img
+                  src={g.src}
+                  alt={g.titulo}
+                  loading="lazy"
+                  className="block w-full h-auto transition-transform duration-700 group-hover:scale-105"
+                />
               </figure>
             </FadeUp>
           ))}
