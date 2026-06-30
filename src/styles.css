@@ -64,7 +64,7 @@
 :root {
   --radius: 0.625rem;
   /* Dark, sophisticated palette — Pospichil */
-  --background: oklch(0.13 0.003 270);          /* near-black #0A0A0B */
+  --background: #030500;                      /* fundo do logo */
   --foreground: oklch(0.96 0.008 80);           /* warm ivory */
   --card: oklch(0.16 0.003 270);                /* onyx #111114 */
   --card-foreground: oklch(0.96 0.008 80);
