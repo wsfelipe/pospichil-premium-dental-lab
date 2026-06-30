@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Instagram } from "lucide-react";
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
@@ -424,6 +425,11 @@ function Galeria() {
                   loading="lazy"
                   className="block w-full h-auto transition-transform duration-700 group-hover:scale-105"
                 />
+                <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <span className="text-[11px] uppercase tracking-[0.22em] text-white/90">
+                    {g.categoria}
+                  </span>
+                </figcaption>
               </figure>
             </FadeUp>
           ))}
@@ -618,7 +624,17 @@ function Contato() {
             <p className="text-muted-foreground">
               Rua Gáspar Martins, 984 — Centro · Taquara/RS
             </p>
-            <p className="text-muted-foreground">@laboratoriopospichil</p>
+            <a
+              href="https://www.instagram.com/laboratoriopospichil"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-accent"
+            >
+              <span className="grid h-10 w-10 place-items-center rounded-full border border-hairline">
+                <Instagram className="h-4 w-4 fill-current" />
+              </span>
+              Siga-nos no Instagram @laboratoriopospichil
+            </a>
           </div>
         </FadeUp>
 
