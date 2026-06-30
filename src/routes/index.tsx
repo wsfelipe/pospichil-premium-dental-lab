@@ -425,6 +425,11 @@ function Galeria() {
                   loading="lazy"
                   className="block w-full h-auto transition-transform duration-700 group-hover:scale-105"
                 />
+                <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <span className="text-[11px] uppercase tracking-[0.22em] text-white/90">
+                    {g.categoria}
+                  </span>
+                </figcaption>
               </figure>
             </FadeUp>
           ))}
