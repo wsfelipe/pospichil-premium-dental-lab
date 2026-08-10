@@ -25,7 +25,7 @@ import { Section, SectionHeading } from "@/components/site/Section";
 import { FadeUp } from "@/components/site/FadeUp";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import { galeriaItems } from "@/lib/galeria";
+import { getGaleriaItems, type GaleriaItem } from "@/lib/galeria";
 import emailjs from "@emailjs/browser";
 
 const SITE_TITLE = "Laboratório Pospichil - Prótese Odontológica em Taquara/RS";
@@ -364,46 +364,6 @@ function Diferenciais() {
   );
 }
 
-// /* ---------------- TECNOLOGIAS ---------------- */
-// const TECH = [
-//   { icon: Cpu, title: "CAD/CAM", desc: "Modelagem digital precisa de coroas, pontes e protocolos." },
-//   { icon: Printer, title: "Impressão 3D", desc: "Modelos, guias e provisórios com fidelidade dimensional." },
-// ];
-
-// function Tecnologias() {
-//   return (
-//     <Section id="tecnologias" className="border-t border-hairline">
-//       <FadeUp>
-//         <SectionHeading
-//           eyebrow="Tecnologias"
-//           title={
-//             <>
-//               Um parque tecnológico a serviço do seu{" "}
-//               <span className="italic text-accent">fluxo clínico</span>.
-//             </>
-//           }
-//           description="Recebemos moldagens convencionais e arquivos STL/PLY dos principais scanners intraorais do mercado."
-//         />
-//       </FadeUp>
-
-//       <div className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
-//         {TECH.map((s, i) => (
-//           <FadeUp key={s.title} delay={i * 0.05}>
-//             <article className="group relative h-full bg-card p-8 transition-colors duration-500 hover:bg-secondary">
-//               <div className="mb-8 inline-flex h-11 w-11 items-center justify-center rounded-full border border-hairline text-accent transition-all duration-500 group-hover:border-accent group-hover:bg-accent/10">
-//                 <s.icon className="h-5 w-5" strokeWidth={1.5} />
-//               </div>
-//               <h3 className="font-serif text-2xl text-foreground">{s.title}</h3>
-//               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
-//               <span className="absolute bottom-0 left-0 h-px w-0 bg-accent transition-all duration-500 group-hover:w-full" />
-//             </article>
-//           </FadeUp>
-//         ))}
-//       </div>
-//     </Section>
-//   );
-// }
-
 /* ---------------- GALERIA ---------------- */
 const GALERIA_PLACEHOLDERS = [
   { ratio: "aspect-[4/5]", label: "Bancada" },
@@ -417,9 +377,14 @@ const GALERIA_PLACEHOLDERS = [
 ];
 
 function Galeria() {
+  const [galeriaItems, setGaleriaItems] = useState<GaleriaItem[]>([]);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  useEffect(() => {
+    getGaleriaItems().then(setGaleriaItems);
+  }, []);
+  
   const temImagens = galeriaItems.length > 0;
   const filtradas = galeriaItems;
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const closeLightbox = () => setLightboxIndex(null);
   const prev = () =>
@@ -475,7 +440,7 @@ function Galeria() {
                   </button>
                   <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/40 to-transparent p-4">
                     <span className="text-[11px] uppercase tracking-[0.22em] text-white/90">
-                      {g.categoria}
+                      {g.titulo}
                     </span>
                   </figcaption>
                 </figure>
