@@ -592,14 +592,14 @@ const DEPOIMENTOS = [
   {
     name: "Dr. Alexander Rama Quadros",
     quote: "Após quase 30 anos de parceria, fica difícil transcrever em poucas palavras o tamanho da Excelência do Laboratório Pospichil, uma Empresa séria, competente, sempre focada nos melhores resultados e preocupada com a qualidade dos trabalhos desenvolvidos pela sua equipe que, de uma forma ou de outra, tornam a vida das pessoas melhor. Agradeço ao José Carlos e ao Silvio, seus sócios fundadores e também aos demais colaboradores, toda a atenção e dedicação que sempre tiveram comigo e com a minha Clínica, desejando sempre muito sucesso!",
-    photo: "src/assets/depoimentos/alexander_quadros.jpg",
+    photo: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/depoimentos/alexander_quadros.jpg",
     instagram: "https://www.instagram.com/odontologiaalexander?igsh=YTBvZWg4cGh6bXU=",
     whatsapp: "https://wa.me/5551997715001"
   },
   {
     name: "Dra. Laura Pédra",
     quote: "É sempre um prazer trabalhar com o Laboratório Pospichil. A confiança que tenho no trabalho deles reflete diretamente na qualidade que entrego aos meus pacientes.\nA excelência em cada detalhe, a adaptação impecável das peças e o comprometimento com a qualidade fazem toda a diferença. É uma satisfação poder contar com um laboratório que transmite tanta segurança e credibilidade. Parabéns pelo excelente trabalho!",
-    photo: "src/assets/depoimentos/laura_pedra.jpg",
+    photo: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/depoimentos/laura_pedra.jpg",
     instagram: "https://www.instagram.com/laurapedraodontologia?igsh=MXFka3B2MWxzN2xzaw==",
     whatsapp: "https://wa.me/5551994885335"
   },
