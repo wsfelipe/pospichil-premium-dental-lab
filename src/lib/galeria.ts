@@ -15,7 +15,24 @@ export type GaleriaItem = {
 };
 
 function humanize(slug: string): string {
-  const cleaned = slug.replace(/[-_]+/g, " ").trim();
+  const corrections: Record<string, string> = {
+    protese: "prótese",
+    proteses: "próteses",
+    zirconia: "zircônia",
+    ceramica: "cerâmica",
+    estetica: "estética",
+    acrilico: "acrílico",
+    ceramicos: "cerâmicos",
+  };
+
+  const cleaned = slug
+    .replace(/(?:[-_\s]?\d+)$/, "")
+    .replace(/[-_]+/g, " ")
+    .trim()
+    .split(" ")
+    .map((word) => corrections[word.toLowerCase()] ?? word)
+    .join(" ");
+
   return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
 }
 
