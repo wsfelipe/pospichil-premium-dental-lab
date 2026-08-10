@@ -1,8 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import whatsappIconBlack from "../assets/icons/whatsapp.png";
-import whatsappIcon from "../assets/icons/whatsapp_white.webp";
-import instagramIcon from "../assets/icons/instagram_white.webp";
-import mapsIcon from "../assets/icons/maps.png";
 import { useState, useEffect } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
@@ -159,7 +155,7 @@ function Hero() {
             className="group inline-flex items-center gap-3 rounded-full bg-foreground px-7 py-4 text-sm font-medium text-background transition-all hover:bg-accent hover:text-accent-foreground"
           >
             <img
-              src={whatsappIconBlack}
+              src="https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/whatsapp.png"
               alt="WhatsApp"
               className="h-5 w-5 object-contain"
             />
@@ -624,7 +620,7 @@ function Depoimentos() {
                           className="flex h-9 w-9 items-center justify-center rounded-full border border-white bg-white/10 transition-all duration-200 hover:bg-white/30"
                         >
                           <img
-                            src="src/assets/icons/instagram_white.webp"
+                            src="https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/instagram_white.webp"
                             alt="Instagram"
                             className="block h-4 w-4 object-contain"
                           />
@@ -640,7 +636,7 @@ function Depoimentos() {
                           className="flex h-9 w-9 items-center justify-center rounded-full border border-white bg-white/10 transition-all duration-200 hover:bg-white/30"
                         >
                           <img
-                            src="src/assets/icons/whatsapp_white.webp"
+                            src="https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/whatsapp_white.webp"
                             alt="WhatsApp"
                             className="block h-4 w-4 object-contain"
                           />
@@ -838,7 +834,7 @@ function Contato() {
             >
               <span className="grid h-10 w-10 place-items-center rounded-full border border-hairline">
                 <img
-                  src={whatsappIcon}
+                  src="https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/whatsapp_white.webp"
                   alt="WhatsApp"
                   className="h-5 w-5 object-contain"
                 />
@@ -853,7 +849,7 @@ function Contato() {
             >
               <span className="grid h-10 w-10 place-items-center rounded-full border border-hairline">
                 <img
-                  src={mapsIcon}
+                  src="https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/maps.png"
                   alt="Google Maps"
                   className="h-5 w-5 object-contain"
                 />
@@ -868,7 +864,7 @@ function Contato() {
             >
               <span className="grid h-10 w-10 place-items-center rounded-full border red border-hairline">
                 <img
-                  src={instagramIcon}
+                  src="https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/instagram_white.webp"
                   alt="Instagram"
                   className="h-5 w-5 object-contain"
                 />
