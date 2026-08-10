@@ -1,11 +1,4 @@
-// Carrega automaticamente todas as imagens em src/assets/galeria/.
-// Convenção de nome do arquivo: `categoria__titulo-do-caso.ext`
-// Ex.: `coroas__zirconia-superior-caso-1.jpg`
-
-const modules = import.meta.glob(
-  "/src/assets/galeria/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP,AVIF}",
-  { eager: true, query: "?url", import: "default" },
-) as Record<string, string>;
+import { supabase } from "@/lib/supabase";
 
 export type GaleriaItem = {
   src: string;
@@ -14,45 +7,31 @@ export type GaleriaItem = {
   filename: string;
 };
 
-function humanize(slug: string): string {
-  const corrections: Record<string, string> = {
-    protese: "prótese",
-    proteses: "próteses",
-    zirconia: "zircônia",
-    ceramica: "cerâmica",
-    estetica: "estética",
-    acrilico: "acrílico",
-    ceramicos: "cerâmicos",
-  };
+export async function getGaleriaItems(): Promise<GaleriaItem[]> {
+  const { data, error } = await supabase
+    .from("gallery")
+    .select(`
+      id,
+      image_url,
+      title,
+      order,
+      active
+    `)
+    .eq("active", true)
+    .order("order", { ascending: true });
 
-  const cleaned = slug
-    .replace(/(?:[-_\s]?\d+)$/, "")
-    .replace(/[-_]+/g, " ")
-    .trim()
-    .split(" ")
-    .map((word) => corrections[word.toLowerCase()] ?? word)
-    .join(" ");
+  if (error) {
+    console.error("Erro ao buscar galeria:", error);
+    return [];
+  }
 
-  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+  console.log("GALERIA DATA:", data);
+  console.log("GALERIA ERROR:", error);
+
+  return data.map((item) => ({
+    src: item.image_url,
+    categoria: "",
+    titulo: item.title,
+    filename: item.image_url.split("/").pop() ?? String(item.id),
+  }));
 }
-
-function parseFilename(path: string): GaleriaItem {
-  const filename = path.split("/").pop() ?? path;
-  const base = filename.replace(/\.[^.]+$/, "");
-  const [rawCategoria, ...rest] = base.split("__");
-  const rawTitulo = rest.join("__") || rawCategoria;
-  return {
-    src: modules[path],
-    categoria: humanize(rawCategoria),
-    titulo: humanize(rawTitulo),
-    filename,
-  };
-}
-
-export const galeriaItems: GaleriaItem[] = Object.keys(modules)
-  .sort()
-  .map(parseFilename);
-
-export const galeriaCategorias: string[] = Array.from(
-  new Set(galeriaItems.map((i) => i.categoria)),
-);
