@@ -2,6 +2,23 @@ import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
+import {
+    DndContext,
+    closestCenter,
+    PointerSensor,
+    useSensor,
+    useSensors,
+    type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+    SortableContext,
+    verticalListSortingStrategy,
+    arrayMove,
+} from "@dnd-kit/sortable";
+import { Save } from "lucide-react";
+
+import { SortableGalleryItem } from "./../components/ui/SortableGallery";
+
 
 type Categoria = {
     id: number;
@@ -39,13 +56,15 @@ function Admin() {
     const [loading, setLoading] = useState(false);
     const [mensagem, setMensagem] = useState("");
 
+    const [galeriaOrdenada, setGaleriaOrdenada] = useState(galeria);
+    const [salvandoOrdem, setSalvandoOrdem] = useState(false);
+
     const navigate = useNavigate();
     const [authChecking, setAuthChecking] = useState(true);
 
     const invalidForm =
         !imagem ||
-        !titulo.trim() ||
-        !categoria;
+        !titulo.trim();
 
     useEffect(() => {
         async function verificarAuth() {
@@ -66,6 +85,67 @@ function Admin() {
 
         verificarAuth();
     }, [navigate]);
+
+    useEffect(() => {
+        setGaleriaOrdenada(galeria);
+    }, [galeria]);
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 5,
+            },
+        })
+    );
+
+    function handleDragEnd(event: DragEndEvent) {
+        const { active, over } = event;
+
+        if (!over || active.id === over.id) {
+            return;
+        }
+
+        setGaleriaOrdenada((items) => {
+            const oldIndex = items.findIndex(
+                (item) => item.id === active.id
+            );
+
+            const newIndex = items.findIndex(
+                (item) => item.id === over.id
+            );
+
+            return arrayMove(items, oldIndex, newIndex);
+        });
+    }
+
+    async function salvarOrdem() {
+        try {
+            setSalvandoOrdem(true);
+
+            const updates = galeriaOrdenada.map((item, index) =>
+                supabase
+                    .from("gallery")
+                    .update({ order: index })
+                    .eq("id", item.id)
+            );
+
+             
+
+            const results = await Promise.all(updates);
+
+            const error = results.find((result) => result.error)?.error;
+
+            if (error) {
+                throw error;
+            }
+
+            console.log("Ordem salva com sucesso!");
+        } catch (error) {
+            console.error("Erro ao salvar ordem:", error);
+        } finally {
+            setSalvandoOrdem(false);
+        }
+    }
 
     async function carregarCategorias() {
         const { data, error } = await supabase
@@ -155,7 +235,7 @@ function Admin() {
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
-        if (!imagem || !titulo.trim() || !categoria) {
+        if (!imagem || !titulo.trim()) {
             setMensagem("Preencha todos os campos.");
             return;
         }
@@ -195,7 +275,7 @@ function Admin() {
                     title: titulo.trim(),
                     order: Number(null),
                     active: true,
-                    fk_category: Number(categoria),
+                    fk_category: Number(categoria) || null,
                 });
 
             if (insertError) {
@@ -486,60 +566,53 @@ function Admin() {
                 </form>
 
                 {/* Galeria existente */}
-                <div className="mt-12">
-                    <div className="mb-6">
-                        <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">
-                            Galeria
-                        </p>
-
-                        <h2 className="mt-2 text-2xl font-semibold">
-                            Imagens cadastradas
-                        </h2>
+                <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h2 className="mt-2 text-2xl font-semibold">
+                                Imagens cadastradas
+                            </h2>
+                        </div>
                     </div>
 
-                    {galeria.length === 0 ? (
+                    {galeriaOrdenada.length === 0 ? (
                         <div className="rounded-2xl border border-hairline p-6 text-sm text-muted-foreground">
                             Nenhuma imagem cadastrada.
                         </div>
                     ) : (
-                        <div className="space-y-3">
-                            {galeria.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className="flex items-center gap-4 rounded-2xl border border-hairline p-3"
-                                >
-                                    <img
-                                        src={item.image_url}
-                                        alt={item.title}
-                                        className="h-20 w-20 shrink-0 rounded-xl object-cover"
-                                    />
-
-                                    <div className="min-w-0 flex-1">
-                                        <p className="truncate font-medium">
-                                            {item.title}
-                                        </p>
-
-                                        <p className="mt-1 text-xs text-muted-foreground">
-                                            {item.gallery_categories?.name ??
-                                                "Sem categoria"}
-                                        </p>
-                                    </div>
-
-                                    <span
-                                        className={`shrink-0 rounded-full px-3 py-1 text-xs ${item.active
-                                            ? "bg-white/10 text-foreground"
-                                            : "bg-white/5 text-muted-foreground"
-                                            }`}
-                                    >
-                                        {item.active
-                                            ? "Ativo"
-                                            : "Inativo"}
-                                    </span>
+                        <DndContext
+                            sensors={sensors}
+                            collisionDetection={closestCenter}
+                            onDragEnd={handleDragEnd}
+                        >
+                            <SortableContext
+                                items={galeriaOrdenada.map((item) => item.id)}
+                                strategy={verticalListSortingStrategy}
+                            >
+                                <div className="space-y-3">
+                                    {galeriaOrdenada.map((item) => (
+                                        <SortableGalleryItem
+                                            key={item.id}
+                                            item={item}
+                                        />
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
+                            </SortableContext>
+                        </DndContext>
                     )}
                 </div>
+                {galeriaOrdenada.length > 0 && (
+                    <button
+                        type="button"
+                        onClick={salvarOrdem}
+                        disabled={salvandoOrdem}
+                        className="w-full cursor-pointer rounded-lg bg-[#E3E3E3] px-4 py-3 font-medium text-black transition-colors hover:bg-[#CCCCCC] disabled:cursor-not-allowed disabled:bg-accent disabled:opacity-50"
+                    >
+                        {salvandoOrdem
+                            ? "Salvando..."
+                            : "Salvar ordem"}
+                    </button>
+                )}
             </div>
         </main>
     );

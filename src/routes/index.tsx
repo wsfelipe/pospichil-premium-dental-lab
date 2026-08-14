@@ -490,7 +490,7 @@ function Galeria() {
                   className="block max-h-[88vh] max-w-[92vw] rounded-lg object-contain"
                 />
                 <figcaption className="mt-3 text-center text-[11px] uppercase tracking-[0.22em] text-white/80">
-                  {filtradas[lightboxIndex].categoria} · {lightboxIndex + 1}/{filtradas.length}
+                  {filtradas[lightboxIndex].titulo} · {lightboxIndex + 1}/{filtradas.length}
                 </figcaption>
               </figure>
             </div>
