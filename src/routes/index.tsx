@@ -79,6 +79,7 @@ function HomePage() {
         <Diferenciais />
         {/* <Tecnologias /> */}
         <Galeria />
+        <Casa />
         <Depoimentos />
         <FAQ />
         <Contato />
@@ -261,13 +262,13 @@ function Sobre() {
 
 /* ---------------- SERVIÇOS ---------------- */
 const SERVICOS = [
-  { icon: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/protese_total.png", title: "Próteses totais", desc: "Reabilitação completa com estética natural e adaptação confortável." },
-  { icon: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/proteses_parciais.png", title: "Próteses parciais removíveis", desc: "PPR em estruturas metálicas, ajustadas caso a caso." },
-  { icon: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/protocolo.png", title: "Próteses protocolo", desc: "Acrílico e cerâmica sobre implantes, com encaixe preciso e acabamento refinado." },
-  { icon: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/placa.png", title: "Placas de bruxismo", desc: "Placas rígidas e miorrelaxantes sob medida para proteção e conforto." },
-  { icon: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/coroa.png", title: "Coroas e pontes fixas", desc: "Unitárias e múltiplas, sobre dente ou implante, em zircônia e dissilicato." },
-  { icon: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/faceta.png", title: "Facetas e lentes", desc: "Estética minimamente invasiva com cerâmica de alta translucidez." },
-  { icon: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/inlay_onlay.png", title: "Inlay e onlay", desc: "Restaurações indiretas duráveis com excelente integração marginal." },
+  { icon: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/protese_total.png", title: "Próteses totais", desc: "Reabilitação total para pacientes edêntulos, desenvolvida para proporcionar adaptação confortável, estabilidade, função mastigatória eficiente e estética natural." },
+  { icon: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/proteses_parciais.png", title: "Próteses parciais removíveis (PPR)", desc: "Próteses com estrutura metálica fundida, planejadas de forma individualizada para garantir retenção, estabilidade, conforto e preservação dos dentes remanescentes." },
+  { icon: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/protocolo.png", title: "Próteses protocolo", desc: "Próteses fixas sobre implantes, confeccionadas em acrílico ou cerâmica, com encaixe preciso, planejamento cuidadoso e acabamento que alia resistência, função e estética." },
+  { icon: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/placa.png", title: "Placas de bruxismo", desc: "Placas oclusais rígidas e miorrelaxantes confeccionadas sob medida para auxiliar na proteção dos dentes, das restaurações e das estruturas da articulação temporomandibular." },
+  { icon: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/coroa.png", title: "Coroas e pontes fixas", desc: "Restaurações unitárias e múltiplas sobre dentes ou implantes, confeccionadas em metalocerâmica, zircônia ou dissilicato de lítio, proporcionando adaptação precisa, resistência mecânica e excelente resultado estético." },
+  { icon: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/faceta.png", title: "Facetas e lentes", desc: "Laminados cerâmicos indicados para reabilitações estéticas conservadoras, proporcionando naturalidade, estabilidade de cor e excelente reprodução da anatomia dental." },
+  { icon: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/inlay_onlay.png", title: "Inlay e onlay", desc: "Restaurações indiretas em cerâmica indicadas para dentes posteriores com perda parcial de estrutura, oferecendo adaptação marginal precisa, resistência mecânica e preservação da estrutura dental sadia." },
 ];
 
 function Servicos() {
@@ -360,7 +361,7 @@ function Diferenciais() {
   );
 }
 
-/* ---------------- GALERIA ---------------- */
+/* ---------------- GALERIA TRABALHO ---------------- */
 const GALERIA_PLACEHOLDERS = [
   { ratio: "aspect-[4/5]", label: "Bancada" },
   { ratio: "aspect-square", label: "Cerâmica" },
@@ -409,7 +410,185 @@ function Galeria() {
           title={
             <>
               Um olhar sobre o{" "}
-              <span className="italic text-accent">trabalho</span> e a casa.
+              <span className="italic text-accent">trabalho</span>.
+            </>
+          }
+        />
+      </FadeUp>
+
+      {filtradas.length > 0 ? (
+        <>
+          <div className="mt-12 columns-2 gap-4 md:columns-3 lg:columns-4">
+            {filtradas.map((g, i) => (
+              <FadeUp key={g.filename} delay={(i % 4) * 0.05} className="mb-4 break-inside-avoid">
+                <figure className="group relative overflow-hidden rounded-xl border border-hairline">
+                  <button
+                    type="button"
+                    onClick={() => setLightboxIndex(i)}
+                    className="block w-full cursor-zoom-in"
+                    aria-label={`Abrir imagem ${g.titulo}`}
+                  >
+                    <img
+                      src={g.src}
+                      alt={g.titulo}
+                      loading="lazy"
+                      className="block w-full h-auto transition-transform duration-700 group-hover:scale-105"
+                    />
+                  </button>
+                  <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/40 to-transparent p-4">
+                    <span className="text-[11px] uppercase tracking-[0.22em] text-white/90">
+                      {g.titulo}
+                    </span>
+                  </figcaption>
+                </figure>
+              </FadeUp>
+            ))}
+          </div>
+
+          {lightboxIndex !== null && (
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Visualização da imagem"
+              className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 md:p-10 animate-in fade-in duration-200"
+              onClick={closeLightbox}
+            >
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
+                aria-label="Fechar"
+                className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white/90 transition hover:bg-white/10"
+              >
+                <X className="h-5 w-5" />
+              </button>
+              {filtradas.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); prev(); }}
+                    aria-label="Imagem anterior"
+                    className="absolute left-3 md:left-6 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/20 text-white/90 transition hover:bg-white/10"
+                  >
+                    <ChevronLeft className="h-6 w-6" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); next(); }}
+                    aria-label="Próxima imagem"
+                    className="absolute right-3 md:right-6 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/20 text-white/90 transition hover:bg-white/10"
+                  >
+                    <ChevronRight className="h-6 w-6" />
+                  </button>
+                </>
+              )}
+              <figure
+                className="relative max-h-[88vh] max-w-[92vw]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img
+                  src={filtradas[lightboxIndex].src}
+                  alt={filtradas[lightboxIndex].titulo}
+                  className="block max-h-[88vh] max-w-[92vw] rounded-lg object-contain"
+                />
+                <figcaption className="mt-3 text-center text-[11px] uppercase tracking-[0.22em] text-white/80">
+                  {filtradas[lightboxIndex].titulo} · {lightboxIndex + 1}/{filtradas.length}
+                </figcaption>
+              </figure>
+            </div>
+          )}
+        </>
+      ) : temImagens ? (
+        <div className="mt-12 columns-2 gap-4 md:columns-3 lg:columns-4">
+          {galeriaItems.map((g, i) => (
+            <FadeUp key={g.filename} delay={(i % 4) * 0.05} className="mb-4 break-inside-avoid">
+              <figure className="group relative overflow-hidden rounded-xl border border-hairline">
+                <img
+                  src={g.src}
+                  alt={g.titulo}
+                  loading="lazy"
+                  className="block w-full h-auto transition-transform duration-700 group-hover:scale-105"
+                />
+              </figure>
+            </FadeUp>
+          ))}
+        </div>
+      ) : (
+        <div className="mt-16 columns-2 gap-4 md:columns-3 lg:columns-4">
+          {GALERIA_PLACEHOLDERS.map((g, i) => (
+            <FadeUp key={i} delay={(i % 4) * 0.05} className={`mb-4 break-inside-avoid`}>
+              <div
+                className={`group relative overflow-hidden rounded-xl border border-hairline ${g.ratio}`}
+                data-lov-image-placeholder
+                aria-label={`Placeholder - ${g.label}`}
+              >
+                <div
+                  className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, oklch(0.22 0.003 270), oklch(0.16 0.003 270) 60%, oklch(0.18 0.005 80))",
+                  }}
+                />
+                <div
+                  className="absolute inset-0 opacity-30 mix-blend-overlay"
+                  style={{
+                    backgroundImage:
+                      "radial-gradient(circle at 30% 30%, oklch(0.78 0.025 85 / 0.4), transparent 60%)",
+                  }}
+                />
+                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-4">
+                  <span className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
+                    {String(i + 1).padStart(2, "0")} · {g.label}
+                  </span>
+                </div>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
+      )}
+    </Section>
+  );
+}
+
+/* ---------------- GALERIA CASA ---------------- */
+
+function Casa() {
+  const [galeriaItems, setGaleriaItems] = useState<GaleriaItem[]>([]);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  useEffect(() => {
+    getGaleriaItems().then(setGaleriaItems);
+  }, []);
+  
+  const temImagens = galeriaItems.length > 0;
+  const filtradas = galeriaItems;
+
+  const closeLightbox = () => setLightboxIndex(null);
+  const prev = () =>
+    setLightboxIndex((i) =>
+      i === null ? i : (i - 1 + filtradas.length) % filtradas.length,
+    );
+  const next = () =>
+    setLightboxIndex((i) => (i === null ? i : (i + 1) % filtradas.length));
+
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [lightboxIndex]);
+
+  return (
+    <Section id="galeria" className="border-t border-hairline">
+      <FadeUp>
+        <SectionHeading
+          eyebrow="Galeria"
+          title={
+            <>
+              Um olhar sobre a{" "}
+              <span className="italic text-accent">a casa</span>.
             </>
           }
         />
