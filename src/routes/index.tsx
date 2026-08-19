@@ -21,7 +21,7 @@ import { Section, SectionHeading } from "@/components/site/Section";
 import { FadeUp } from "@/components/site/FadeUp";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import { getGaleriaItems, type GaleriaItem } from "@/lib/galeria";
+import { getGaleriaItems, type GaleriaItems } from "@/lib/galeria";
 import emailjs from "@emailjs/browser";
 
 const SITE_TITLE = "Laboratório Pospichil - Prótese Odontológica em Taquara/RS";
@@ -362,26 +362,20 @@ function Diferenciais() {
 }
 
 /* ---------------- GALERIA TRABALHO ---------------- */
-const GALERIA_PLACEHOLDERS = [
-  { ratio: "aspect-[4/5]", label: "Bancada" },
-  { ratio: "aspect-square", label: "Cerâmica" },
-  { ratio: "aspect-[4/3]", label: "Equipe" },
-  { ratio: "aspect-[3/4]", label: "Coroa zircônia" },
-  { ratio: "aspect-[4/3]", label: "Scanner" },
-  { ratio: "aspect-square", label: "Protocolo" },
-  { ratio: "aspect-[4/5]", label: "Acabamento" },
-  { ratio: "aspect-[4/3]", label: "Laboratório" },
-];
-
 function Galeria() {
-  const [galeriaItems, setGaleriaItems] = useState<GaleriaItem[]>([]);
+  const [galeriaItems, setGaleriaItems] = useState<GaleriaItems>({
+    trabalho: [],
+    casa: [],
+  });
+
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
   useEffect(() => {
     getGaleriaItems().then(setGaleriaItems);
   }, []);
-  
-  const temImagens = galeriaItems.length > 0;
-  const filtradas = galeriaItems;
+
+  const temImagens = galeriaItems.trabalho.length > 0;
+  const filtradas = galeriaItems.trabalho;
 
   const closeLightbox = () => setLightboxIndex(null);
   const prev = () =>
@@ -499,7 +493,7 @@ function Galeria() {
         </>
       ) : temImagens ? (
         <div className="mt-12 columns-2 gap-4 md:columns-3 lg:columns-4">
-          {galeriaItems.map((g, i) => (
+          {filtradas.map((g, i) => (
             <FadeUp key={g.filename} delay={(i % 4) * 0.05} className="mb-4 break-inside-avoid">
               <figure className="group relative overflow-hidden rounded-xl border border-hairline">
                 <img
@@ -512,39 +506,7 @@ function Galeria() {
             </FadeUp>
           ))}
         </div>
-      ) : (
-        <div className="mt-16 columns-2 gap-4 md:columns-3 lg:columns-4">
-          {GALERIA_PLACEHOLDERS.map((g, i) => (
-            <FadeUp key={i} delay={(i % 4) * 0.05} className={`mb-4 break-inside-avoid`}>
-              <div
-                className={`group relative overflow-hidden rounded-xl border border-hairline ${g.ratio}`}
-                data-lov-image-placeholder
-                aria-label={`Placeholder - ${g.label}`}
-              >
-                <div
-                  className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, oklch(0.22 0.003 270), oklch(0.16 0.003 270) 60%, oklch(0.18 0.005 80))",
-                  }}
-                />
-                <div
-                  className="absolute inset-0 opacity-30 mix-blend-overlay"
-                  style={{
-                    backgroundImage:
-                      "radial-gradient(circle at 30% 30%, oklch(0.78 0.025 85 / 0.4), transparent 60%)",
-                  }}
-                />
-                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-4">
-                  <span className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
-                    {String(i + 1).padStart(2, "0")} · {g.label}
-                  </span>
-                </div>
-              </div>
-            </FadeUp>
-          ))}
-        </div>
-      )}
+      ) : null}
     </Section>
   );
 }
@@ -552,14 +514,19 @@ function Galeria() {
 /* ---------------- GALERIA CASA ---------------- */
 
 function Casa() {
-  const [galeriaItems, setGaleriaItems] = useState<GaleriaItem[]>([]);
+  const [galeriaItems, setGaleriaItems] = useState<GaleriaItems>({
+    trabalho: [],
+    casa: [],
+  });
+
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
   useEffect(() => {
     getGaleriaItems().then(setGaleriaItems);
   }, []);
-  
-  const temImagens = galeriaItems.length > 0;
-  const filtradas = galeriaItems;
+
+  const temImagens = galeriaItems.casa.length > 0;
+  const filtradas = galeriaItems.casa;
 
   const closeLightbox = () => setLightboxIndex(null);
   const prev = () =>
@@ -677,7 +644,7 @@ function Casa() {
         </>
       ) : temImagens ? (
         <div className="mt-12 columns-2 gap-4 md:columns-3 lg:columns-4">
-          {galeriaItems.map((g, i) => (
+          {filtradas.map((g, i) => (
             <FadeUp key={g.filename} delay={(i % 4) * 0.05} className="mb-4 break-inside-avoid">
               <figure className="group relative overflow-hidden rounded-xl border border-hairline">
                 <img
@@ -690,39 +657,7 @@ function Casa() {
             </FadeUp>
           ))}
         </div>
-      ) : (
-        <div className="mt-16 columns-2 gap-4 md:columns-3 lg:columns-4">
-          {GALERIA_PLACEHOLDERS.map((g, i) => (
-            <FadeUp key={i} delay={(i % 4) * 0.05} className={`mb-4 break-inside-avoid`}>
-              <div
-                className={`group relative overflow-hidden rounded-xl border border-hairline ${g.ratio}`}
-                data-lov-image-placeholder
-                aria-label={`Placeholder - ${g.label}`}
-              >
-                <div
-                  className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, oklch(0.22 0.003 270), oklch(0.16 0.003 270) 60%, oklch(0.18 0.005 80))",
-                  }}
-                />
-                <div
-                  className="absolute inset-0 opacity-30 mix-blend-overlay"
-                  style={{
-                    backgroundImage:
-                      "radial-gradient(circle at 30% 30%, oklch(0.78 0.025 85 / 0.4), transparent 60%)",
-                  }}
-                />
-                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-4">
-                  <span className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
-                    {String(i + 1).padStart(2, "0")} · {g.label}
-                  </span>
-                </div>
-              </div>
-            </FadeUp>
-          ))}
-        </div>
-      )}
+      ) : null}
     </Section>
   );
 }
