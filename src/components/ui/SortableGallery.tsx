@@ -4,10 +4,14 @@ import { CSS } from "@dnd-kit/utilities";
 
 type SortableGalleryItemProps = {
     item: any;
+    onEdit?: (item: any) => void;
+    onDelete?: (item: any) => void;
 };
 
 export function SortableGalleryItem({
     item,
+    onEdit,
+    onDelete,
 }: SortableGalleryItemProps) {
     const {
         attributes,
@@ -60,16 +64,27 @@ export function SortableGalleryItem({
                 </p>
             </div>
 
-            {/* STATUS */}
-            <span
-                className={`shrink-0 rounded-full px-3 py-1 text-xs ${
-                    item.active
-                        ? "bg-white/10 text-foreground"
-                        : "bg-white/5 text-muted-foreground"
-                }`}
-            >
-                {item.active ? "Ativo" : "Inativo"}
-            </span>
+            <div className="flex shrink-0 items-center gap-2">
+                {onEdit && (
+                    <button
+                        type="button"
+                        onClick={() => onEdit(item)}
+                        className="cursor-pointer rounded-lg border border-hairline bg-transparent px-3 py-2 text-xs font-medium text-foreground transition-colors hover:bg-white/5"
+                    >
+                        Editar
+                    </button>
+                )}
+
+                {onDelete && (
+                    <button
+                        type="button"
+                        onClick={() => onDelete(item)}
+                        className="cursor-pointer rounded-lg border border-red-500/60 bg-red-500/10 px-3 py-2 text-xs font-medium text-red-200 transition-colors hover:bg-red-500/20"
+                    >
+                        Excluir
+                    </button>
+                )}
+            </div>
         </div>
     );
 }

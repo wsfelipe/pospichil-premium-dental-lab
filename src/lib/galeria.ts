@@ -5,9 +5,18 @@ export type GaleriaItem = {
   categoria: string;
   titulo: string;
   filename: string;
+  gallery_categories?: {
+    id: number;
+    name: string;
+  }[];
 };
 
-export async function getGaleriaItems(): Promise<GaleriaItem[]> {
+export type GaleriaItems = {
+  trabalho: GaleriaItem[];
+  casa: GaleriaItem[];
+};
+
+export async function getGaleriaItems(): Promise<GaleriaItems> {
   const { data, error } = await supabase
     .from("gallery")
     .select(`
@@ -15,23 +24,39 @@ export async function getGaleriaItems(): Promise<GaleriaItem[]> {
       image_url,
       title,
       order,
-      active
+      active,
+      fk_category,
+      gallery_categories (
+        id,
+        name
+      )
     `)
     .eq("active", true)
     .order("order", { ascending: true });
 
   if (error) {
     console.error("Erro ao buscar galeria:", error);
-    return [];
+
+    return {
+      trabalho: [],
+      casa: [],
+    };
   }
 
-  console.log("GALERIA DATA:", data);
-  console.log("GALERIA ERROR:", error);
-
-  return data.map((item) => ({
+  const items: GaleriaItem[] = data.map((item) => ({
     src: item.image_url,
-    categoria: "",
+    categoria: item.gallery_categories?.name || "",
     titulo: item.title,
     filename: item.image_url.split("/").pop() ?? String(item.id),
+    gallery_categories: item.gallery_categories,
   }));
+
+  return {
+    trabalho: items.filter(
+      (item) => item.categoria.toLowerCase() === "trabalho"
+    ),
+    casa: items.filter(
+      (item) => item.categoria.toLowerCase() === "casa"
+    ),
+  };
 }
