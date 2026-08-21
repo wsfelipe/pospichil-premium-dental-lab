@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
@@ -369,6 +369,7 @@ function Galeria() {
   });
 
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     getGaleriaItems().then(setGaleriaItems);
@@ -384,6 +385,21 @@ function Galeria() {
     );
   const next = () =>
     setLightboxIndex((i) => (i === null ? i : (i + 1) % filtradas.length));
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLElement>) => {
+    touchStartX.current = e.touches[0]?.clientX ?? null;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLElement>) => {
+    if (touchStartX.current === null || filtradas.length < 2) return;
+
+    const distance = e.changedTouches[0]?.clientX - touchStartX.current;
+    touchStartX.current = null;
+
+    if (Math.abs(distance) < 50) return;
+    if (distance < 0) next();
+    else prev();
+  };
 
   useEffect(() => {
     if (lightboxIndex === null) return;
@@ -461,7 +477,7 @@ function Galeria() {
                     type="button"
                     onClick={(e) => { e.stopPropagation(); prev(); }}
                     aria-label="Imagem anterior"
-                    className="absolute left-3 md:left-6 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/20 text-white/90 transition hover:bg-white/10"
+                    className="absolute left-3 hidden h-12 w-12 items-center justify-center rounded-full border border-white/20 text-white/90 transition hover:bg-white/10 md:left-6 md:inline-flex"
                   >
                     <ChevronLeft className="h-6 w-6" />
                   </button>
@@ -469,7 +485,7 @@ function Galeria() {
                     type="button"
                     onClick={(e) => { e.stopPropagation(); next(); }}
                     aria-label="Próxima imagem"
-                    className="absolute right-3 md:right-6 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/20 text-white/90 transition hover:bg-white/10"
+                    className="absolute right-3 hidden h-12 w-12 items-center justify-center rounded-full border border-white/20 text-white/90 transition hover:bg-white/10 md:right-6 md:inline-flex"
                   >
                     <ChevronRight className="h-6 w-6" />
                   </button>
@@ -478,11 +494,13 @@ function Galeria() {
               <figure
                 className="relative max-h-[88vh] max-w-[92vw]"
                 onClick={(e) => e.stopPropagation()}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
               >
                 <img
                   src={filtradas[lightboxIndex].src}
                   alt={filtradas[lightboxIndex].titulo}
-                  className="block max-h-[88vh] max-w-[92vw] rounded-lg object-contain"
+                  className="block max-h-[88vh] max-w-[92vw] touch-pan-y rounded-lg object-contain"
                 />
                 <figcaption className="mt-3 text-center text-[11px] uppercase tracking-[0.22em] text-white/80">
                   {filtradas[lightboxIndex].titulo} · {lightboxIndex + 1}/{filtradas.length}
