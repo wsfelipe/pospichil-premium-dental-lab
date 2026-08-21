@@ -33,7 +33,7 @@ export function Header() {
       )}
     >
       <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-6 md:px-10">
-        <a href="#top" className="flex items-center gap-3" aria-label="Início">
+        <a href="#top" className="flex items-center gap-3 pt-2" aria-label="Início">
           <Logo size={40} />
         </a>
 

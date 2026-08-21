@@ -26,7 +26,7 @@ export function WhatsAppFAB() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Falar no WhatsApp"
-      className={`group fixed ${footerVisible ? "bottom-[86px]" : "bottom-6"
+      className={`group fixed ${footerVisible ? "bottom-[150px] md:bottom-[86px]" : "bottom-6"
         } right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-black transition-all duration-300 hover:-translate-y-0.5`}    >
       <img
         src="https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/icons/whatsapp.png"
