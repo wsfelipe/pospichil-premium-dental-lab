@@ -8,6 +8,7 @@ const NAV = [
   { href: "#servicos", label: "Serviços" },
   { href: "#diferenciais", label: "Diferenciais" },
   { href: "#galeria", label: "Galeria" },
+  { href: "#depoimentos", label: "Depoimentos" },
   { href: "#faq", label: "FAQ" },
   { href: "#contato", label: "Contato" },
 ];
@@ -15,12 +16,34 @@ const NAV = [
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [activeHref, setActiveHref] = useState(NAV[0].href);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const sections = NAV.map(({ href }) => document.querySelector(href)).filter(
+      (section): section is Element => section !== null,
+    );
+    if (!sections.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleSection = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((first, second) => second.intersectionRatio - first.intersectionRatio)[0];
+
+        if (visibleSection) setActiveHref(`#${visibleSection.target.id}`);
+      },
+      { rootMargin: "-25% 0px -60%", threshold: [0, 0.25, 0.5, 0.75, 1] },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -42,10 +65,18 @@ export function Header() {
             <a
               key={item.href}
               href={item.href}
-              className="group relative text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className={cn(
+                "group relative text-sm text-muted-foreground transition-colors hover:text-foreground",
+                activeHref === item.href && "text-foreground",
+              )}
             >
               {item.label}
-              <span className="absolute -bottom-1 left-0 h-px w-0 bg-accent transition-all duration-300 group-hover:w-full" />
+              <span
+                className={cn(
+                  "absolute -bottom-1 left-0 h-px bg-accent transition-all duration-300 group-hover:w-full",
+                  activeHref === item.href ? "w-full" : "w-0",
+                )}
+              />
             </a>
           ))}
         </nav>

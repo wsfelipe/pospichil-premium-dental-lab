@@ -24,7 +24,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { getGaleriaItems, type GaleriaItems } from "@/lib/galeria";
 import emailjs from "@emailjs/browser";
 
-const SITE_TITLE = "Laboratório Pospichil - Prótese Odontológica em Taquara/RS";
+const SITE_TITLE = "Laboratório Pospichil";
 const SITE_DESC =
   "Há 26 anos produzindo próteses dentárias com precisão artesanal e tecnologia digital. Parceiro confiável de cirurgiões-dentistas e clínicas em todo o Rio Grande do Sul.";
 
