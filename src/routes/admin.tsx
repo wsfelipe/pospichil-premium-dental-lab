@@ -157,15 +157,35 @@ function Admin() {
         }
 
         setGaleriaOrdenada((items) => {
-            const oldIndex = items.findIndex(
-                (item) => item.id === active.id
+            const itensDaCategoria = items.filter(
+                (item) =>
+                    item.gallery_categories?.name.toLowerCase() ===
+                    categoriaSelecionada.toLowerCase(),
             );
-
-            const newIndex = items.findIndex(
-                (item) => item.id === over.id
+            const oldIndex = itensDaCategoria.findIndex(
+                (item) => item.id === active.id,
             );
+            const newIndex = itensDaCategoria.findIndex(
+                (item) => item.id === over.id,
+            );
+            const itensReordenados = arrayMove(
+                itensDaCategoria,
+                oldIndex,
+                newIndex,
+            );
+            let categoriaIndex = 0;
 
-            return arrayMove(items, oldIndex, newIndex);
+            return items.map((item) => {
+                const pertenceACategoria =
+                    item.gallery_categories?.name.toLowerCase() ===
+                    categoriaSelecionada.toLowerCase();
+
+                if (!pertenceACategoria) {
+                    return item;
+                }
+
+                return itensReordenados[categoriaIndex++];
+            });
         });
     }
 
@@ -173,7 +193,12 @@ function Admin() {
         try {
             setSalvandoOrdem(true);
 
-            const updates = galeriaOrdenada.map((item, index) =>
+            const itensDaCategoria = galeriaOrdenada.filter(
+                (item) =>
+                    item.gallery_categories?.name.toLowerCase() ===
+                    categoriaSelecionada.toLowerCase(),
+            );
+            const updates = itensDaCategoria.map((item, index) =>
                 supabase
                     .from("gallery")
                     .update({ order: index })
@@ -400,11 +425,22 @@ function Admin() {
 
                 setMensagem("Imagem atualizada com sucesso!");
             } else {
+                const categoriaId = Number(categoria) || null;
+                const maiorOrdem = galeria
+                    .filter((item) => item.fk_category === categoriaId)
+                    .reduce(
+                        (maior, item) =>
+                            typeof item.order === "number" && item.order > maior
+                                ? item.order
+                                : maior,
+                        -1,
+                    );
+
                 const payload = {
                     image_url: proximaUrl || "",
                     title: titulo.trim(),
-                    order: Number(null),
-                    fk_category: Number(categoria) || null,
+                    order: maiorOrdem + 1,
+                    fk_category: categoriaId,
                 };
 
                 console.log("DEBUG insert -> payload", payload);
@@ -511,6 +547,11 @@ function Admin() {
         setImagem(null);
         setCategoriaOpen(false);
 
+        document.getElementById("insercao-imagem")?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
+
         const input = document.getElementById(
             "imagem",
         ) as HTMLInputElement | null;
@@ -544,6 +585,7 @@ function Admin() {
                 </div>
 
                 <form
+                    id="insercao-imagem"
                     onSubmit={handleSubmit}
                     className="space-y-6 rounded-2xl border border-hairline p-6"
                 >
@@ -561,7 +603,7 @@ function Admin() {
                             <button
                                 type="button"
                                 onClick={resetFormulario}
-                                className="rounded-lg border border-hairline bg-transparent px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+                                className="cursor-pointer rounded-lg border border-hairline bg-transparent px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
                             >
                                 Cancelar
                             </button>
@@ -777,7 +819,7 @@ function Admin() {
                                                         setAdicionandoCategoria(false);
                                                         setNovaCategoria("");
                                                     }}
-                                                    className="flex-1 rounded-xl px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-white/10 hover:text-foreground"
+                                                    className="flex-1 cursor-pointer rounded-xl px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-white/10 hover:text-foreground"
                                                 >
                                                     Cancelar
                                                 </button>
