@@ -682,6 +682,8 @@ function Casa() {
 
 /* ---------------- DEPOIMENTOS ---------------- */
 const HTML_ENTITIES: Record<string, string> = {
+  "&agrave;": "à",
+  "&Agrave;": "À",
   "&aacute;": "á",
   "&Aacute;": "Á",
   "&atilde;": "ã",
@@ -700,7 +702,7 @@ const HTML_ENTITIES: Record<string, string> = {
 };
 
 function decodeHtmlEntities(text: string) {
-  return text.replace(/&(?:Aacute|aacute|atilde|Ccedil|ccedil|Eacute|eacute|ecirc|Iacute|iacute|oacute|ocirc|otilde|Uacute|uacute);/g, (entity) => HTML_ENTITIES[entity]);
+  return text.replace(/&(?:Agrave|agrave|Aacute|aacute|atilde|Ccedil|ccedil|Eacute|eacute|ecirc|Iacute|iacute|oacute|ocirc|otilde|Uacute|uacute);/g, (entity) => HTML_ENTITIES[entity]);
 }
 
 const DEPOIMENTOS = [
@@ -777,7 +779,7 @@ function Depoimentos() {
                     />
 
                     <div>
-                      <p className="text-sm font-medium text-foreground">{d.name}</p>
+                      <p className="text-sm font-medium text-foreground">{decodeHtmlEntities(d.name)}</p>
                     </div>
                   </div>
 
