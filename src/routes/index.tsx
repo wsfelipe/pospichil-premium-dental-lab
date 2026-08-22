@@ -681,6 +681,28 @@ function Casa() {
 }
 
 /* ---------------- DEPOIMENTOS ---------------- */
+const HTML_ENTITIES: Record<string, string> = {
+  "&aacute;": "á",
+  "&Aacute;": "Á",
+  "&atilde;": "ã",
+  "&ccedil;": "ç",
+  "&Ccedil;": "Ç",
+  "&eacute;": "é",
+  "&Eacute;": "É",
+  "&ecirc;": "ê",
+  "&iacute;": "í",
+  "&Iacute;": "Í",
+  "&oacute;": "ó",
+  "&ocirc;": "ô",
+  "&otilde;": "õ",
+  "&uacute;": "ú",
+  "&Uacute;": "Ú",
+};
+
+function decodeHtmlEntities(text: string) {
+  return text.replace(/&(?:Aacute|aacute|atilde|Ccedil|ccedil|Eacute|eacute|ecirc|Iacute|iacute|oacute|ocirc|otilde|Uacute|uacute);/g, (entity) => HTML_ENTITIES[entity]);
+}
+
 const DEPOIMENTOS = [
   {
     name: "Dr. Alexander Rama Quadros",
@@ -690,11 +712,18 @@ const DEPOIMENTOS = [
     whatsapp: "https://wa.me/5551997715001"
   },
   {
-    name: "Dra. Laura Pédra",
-    quote: "É sempre um prazer trabalhar com o Laboratório Pospichil. A confiança que tenho no trabalho deles reflete diretamente na qualidade que entrego aos meus pacientes.\nA excelência em cada detalhe, a adaptação impecável das peças e o comprometimento com a qualidade fazem toda a diferença. É uma satisfação poder contar com um laboratório que transmite tanta segurança e credibilidade. Parabéns pelo excelente trabalho!",
+    name: "Dra. Laura P&eacute;dra",
+    quote: "&Eacute; sempre um prazer trabalhar com o Laborat&oacute;rio Pospichil. A confian&ccedil;a que tenho no trabalho deles reflete diretamente na qualidade que entrego aos meus pacientes.\n\nA excel&ecirc;ncia em cada detalhe, a adapta&ccedil;&atilde;o impec&aacute;vel das pe&ccedil;as e o comprometimento com a qualidade fazem toda a diferen&ccedil;a. &Eacute; uma satisfa&ccedil;&atilde;o poder contar com um laborat&oacute;rio que transmite tanta seguran&ccedil;a e credibilidade. Parab&eacute;ns pelo excelente trabalho!",
     photo: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/depoimentos/laura_pedra.jpg",
     instagram: "https://www.instagram.com/laurapedraodontologia?igsh=MXFka3B2MWxzN2xzaw==",
     whatsapp: "https://wa.me/5551994885335"
+  },
+  {
+    name: "Dra. Victoria Trucci",
+    quote: "Trabalho com o Laborat&oacute;rio Pospichil desde o in&iacute;cio da minha carreira como dentista. A qualidade dos trabalhos que eles entregam sempre esteve &agrave; altura daquilo que busco oferecer aos meus pacientes. A excelente adapta&ccedil;&atilde;o das pe&ccedil;as, a precis&atilde;o, a naturalidade e o cuidado com cada detalhe est&eacute;tico fizeram deste laborat&oacute;rio um parceiro essencial para o sucesso da minha pr&aacute;tica cl&iacute;nica.\n\n&Eacute; uma satisfa&ccedil;&atilde;o poder contar com uma equipe t&atilde;o comprometida na busca pela excel&ecirc;ncia na Odontologia. J&aacute; s&atilde;o mais de quinze anos de parceria e confian&ccedil;a constru&iacute;da atrav&eacute;s do planejamento conjunto de tantos casos, sempre com uma excelente comunica&ccedil;&atilde;o e entrega de trabalhos impec&aacute;veis dentro dos prazos acordados.\n\nRecomendo o Laborat&oacute;rio Pospichil de olhos fechados, n&atilde;o apenas pela qualidade t&eacute;cnica, mas pela parceria pr&oacute;xima, respons&aacute;vel e comprometida com o resultado final de cada caso e satisfa&ccedil;&atilde;o dos meus pacientes.",
+    photo: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/depoimentos/victoria_trucci.jpg",
+    instagram: "https://www.instagram.com/dentista.trucci?igsi=MWljMm04d3Q4dWNydw==",
+    whatsapp: "https://wa.me/555191848574"
   },
 ];
 
@@ -724,7 +753,18 @@ function Depoimentos() {
               <Quote className="h-6 w-6 text-accent" strokeWidth={1.5} />
 
               <blockquote className="mt-6 flex-1 font-serif text-lg leading-relaxed text-foreground">
-                "{d.quote}"
+                {decodeHtmlEntities(d.quote).split(/\r?\n\s*\r?\n+/).map((paragraph, paragraphIndex, paragraphs) => (
+                  <span key={paragraphIndex} className="block [&:not(:first-child)]:mt-5">
+                    {paragraphIndex === 0 && <span aria-hidden="true">&ldquo;</span>}
+                    {paragraph.split(/\r?\n/).map((line, lineIndex) => (
+                      <span key={lineIndex}>
+                        {lineIndex > 0 && <br />}
+                        {line}
+                      </span>
+                    ))}
+                    {paragraphIndex === paragraphs.length - 1 && <span aria-hidden="true">&rdquo;</span>}
+                  </span>
+                ))}
               </blockquote>
 
               <figcaption className="mt-8 border-t border-hairline pt-5">
