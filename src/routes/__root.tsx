@@ -77,11 +77,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Laboratório Pospichil" },
-      { name: "description", content: "Laboratório Pospichil" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Laboratório Pospichil" },
-      { property: "og:description", content: "Laboratório Pospichil" },
+      { title: "Laboratório Pospichil | Análises Clínicas" },
+
+      {
+        name: "description",
+        content:
+          "Laboratório Pospichil — exames laboratoriais e análises clínicas com qualidade, segurança e atendimento especializado.",
+      },
+
+      { name: "author", content: "Laboratório Pospichil" },
+
+      { property: "og:title", content: "Laboratório Pospichil | Análises Clínicas" },
+
+      {
+        property: "og:description",
+        content:
+          "Exames laboratoriais e análises clínicas no Laboratório Pospichil.",
+      },
       { property: "og:type", content: "website" },
     ],
     links: [
