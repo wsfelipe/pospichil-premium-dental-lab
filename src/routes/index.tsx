@@ -189,7 +189,7 @@ function Stats() {
   const items = [
     { value: "26", label: "Anos de atuação" },
     { value: "+50", label: "Dentistas parceiros" },
-    { value: "+20k", label: "Peças entregues" },
+    { value: "+60k", label: "Peças entregues" },
     { value: "RS", label: "Atendimento em todo o estado" },
   ];
   return (
