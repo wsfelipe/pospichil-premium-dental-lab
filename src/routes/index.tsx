@@ -189,7 +189,7 @@ function Stats() {
   const items = [
     { value: "26", label: "Anos de atuação" },
     { value: "+50", label: "Dentistas parceiros" },
-    { value: "+20k", label: "Peças entregues" },
+    { value: "+60k", label: "Peças entregues" },
     { value: "RS", label: "Atendimento em todo o estado" },
   ];
   return (
@@ -710,22 +710,29 @@ const DEPOIMENTOS = [
     name: "Dr. Alexander Rama Quadros",
     quote: "Após quase 30 anos de parceria, fica difícil transcrever em poucas palavras o tamanho da Excelência do Laboratório Pospichil, uma Empresa séria, competente, sempre focada nos melhores resultados e preocupada com a qualidade dos trabalhos desenvolvidos pela sua equipe que, de uma forma ou de outra, tornam a vida das pessoas melhor. Agradeço ao José Carlos e ao Silvio, seus sócios fundadores e também aos demais colaboradores, toda a atenção e dedicação que sempre tiveram comigo e com a minha Clínica, desejando sempre muito sucesso!",
     photo: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/depoimentos/alexander_quadros.jpg",
-    instagram: "https://www.instagram.com/odontologiaalexander?igsh=YTBvZWg4cGh6bXU=",
+    instagram: "https://www.instagram.com/odontologiaalexander",
     whatsapp: "https://wa.me/5551997715001"
   },
   {
     name: "Dra. Laura P&eacute;dra",
     quote: "&Eacute; sempre um prazer trabalhar com o Laborat&oacute;rio Pospichil. A confian&ccedil;a que tenho no trabalho deles reflete diretamente na qualidade que entrego aos meus pacientes.\n\nA excel&ecirc;ncia em cada detalhe, a adapta&ccedil;&atilde;o impec&aacute;vel das pe&ccedil;as e o comprometimento com a qualidade fazem toda a diferen&ccedil;a. &Eacute; uma satisfa&ccedil;&atilde;o poder contar com um laborat&oacute;rio que transmite tanta seguran&ccedil;a e credibilidade. Parab&eacute;ns pelo excelente trabalho!",
     photo: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/depoimentos/laura_pedra.jpg",
-    instagram: "https://www.instagram.com/laurapedraodontologia?igsh=MXFka3B2MWxzN2xzaw==",
+    instagram: "https://www.instagram.com/laurapedraodontologia",
     whatsapp: "https://wa.me/5551994885335"
   },
   {
     name: "Dra. Victoria Trucci",
     quote: "Trabalho com o Laborat&oacute;rio Pospichil desde o in&iacute;cio da minha carreira como dentista. A qualidade dos trabalhos que eles entregam sempre esteve &agrave; altura daquilo que busco oferecer aos meus pacientes. A excelente adapta&ccedil;&atilde;o das pe&ccedil;as, a precis&atilde;o, a naturalidade e o cuidado com cada detalhe est&eacute;tico fizeram deste laborat&oacute;rio um parceiro essencial para o sucesso da minha pr&aacute;tica cl&iacute;nica.\n\n&Eacute; uma satisfa&ccedil;&atilde;o poder contar com uma equipe t&atilde;o comprometida na busca pela excel&ecirc;ncia na Odontologia. J&aacute; s&atilde;o mais de quinze anos de parceria e confian&ccedil;a constru&iacute;da atrav&eacute;s do planejamento conjunto de tantos casos, sempre com uma excelente comunica&ccedil;&atilde;o e entrega de trabalhos impec&aacute;veis dentro dos prazos acordados.\n\nRecomendo o Laborat&oacute;rio Pospichil de olhos fechados, n&atilde;o apenas pela qualidade t&eacute;cnica, mas pela parceria pr&oacute;xima, respons&aacute;vel e comprometida com o resultado final de cada caso e satisfa&ccedil;&atilde;o dos meus pacientes.",
     photo: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/depoimentos/victoria_trucci.jpg",
-    instagram: "https://www.instagram.com/dentista.trucci?igsi=MWljMm04d3Q4dWNydw==",
+    instagram: "https://www.instagram.com/dentista.trucci",
     whatsapp: "https://wa.me/555191848574"
+  },
+  {
+    name: "Dra. Alessandra Kichler",
+    quote: "S&oacute; tenho a agradecer essa parceria de 26 anos de trabalho com o Laborat&oacute;rio Pospichil!\n\nExcel&ecirc;ncia, pontualidade e criatividade em cada projeto!\n\nAtendimento personalizado na busca do melhor resultado para cada caso cl&iacute;nico enviado, em todas as especialidades que englobam a pr&oacute;tese dental atual de alto n&iacute;vel!",
+    photo: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/depoimentos/alessandra_kirchler.jpg",
+    instagram: "https://www.instagram.com/alessandrakichler_",
+    whatsapp: "https://wa.me/5551981287207"
   },
 ];
 
@@ -748,10 +755,10 @@ function Depoimentos() {
         />
       </FadeUp>
 
-      <div className="mt-16 grid gap-8 md:grid-cols-2">
+      <div className="mt-16 columns-1 gap-8 md:columns-2">
         {DEPOIMENTOS.map((d, i) => (
-          <FadeUp key={i} delay={i * 0.08}>
-            <figure className="flex h-full flex-col rounded-2xl border border-hairline bg-card p-8">
+          <FadeUp key={i} delay={i * 0.08} className="mb-8 break-inside-avoid">
+            <figure className="flex flex-col rounded-2xl border border-hairline bg-card p-8">
               <Quote className="h-6 w-6 text-accent" strokeWidth={1.5} />
 
               <blockquote className="mt-6 flex-1 font-serif text-lg leading-relaxed text-foreground">
