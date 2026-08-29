@@ -103,7 +103,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         rel: "icon",
-        href: "https://lmzpudzmdfuzrdratssn.supabase.co/storage/v1/object/public/icons/logos/favicon_logo.png",
+        href: "/favicon.png",
         type: "image/png",
       },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
